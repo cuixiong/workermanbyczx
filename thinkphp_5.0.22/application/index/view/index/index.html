@@ -1,0 +1,71 @@
+<html lang="en" style="font-size: 100px;">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <title>聊天室</title>
+    <link rel="stylesheet" type="text/css" href="/static/public/style/cssreset-min.css">
+    <link rel="stylesheet" type="text/css" href="/static/public/style/common.css">
+    <script src="/static/js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="/static/code/jquery.emoticons.js"></script>
+    <link rel="stylesheet" type="text/css"
+	 href="/static/css/chat.css">
+    <script src="/static/js/easyEditor.min.js"></script>
+    <script src="/static/js/flexible.js"></script>
+</head>
+<body style="">
+<header class="header">
+    <a class="back" href="javascript:history.back()"></a>
+    <h5 class="tit">聊天室</h5>
+</header>
+<div class="message">
+
+
+
+</div>
+<div class="footer">
+      <div class="uploadImg">
+          <img class="img" src="/static/img/uploadPic.png" alt="">
+        <input id="ipt_img" class="ipt_img" name="file" type="file" width="5px" height="5px">
+    </div>
+
+    <a class="trigger" href="javascript:void(0);"></a>
+    <div class="easyEditor" id="easyEditor"></div>
+    <input class="sendContent" type="hidden" name="content">
+    <p class="fasong">发送</p>
+</div>
+<div class="showImgModal flexCenter" onclick="hideModal()">
+    <img style="max-width:100%;background:rgba(255,255,255,0.5);" src="" alt="">
+</div>
+<script>
+
+</script>
+
+<script src="/static/js/chat.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var headSrc = '{$user_info.head_image}';
+    var user_id = '{$user_info.user_id}';
+    var upload_image_url = '{:url("What/what_upload_image")}';
+    var bind_url = '{:url("What/bind_client" )}';
+    var send_url = '{:url("What/send_message" )}';
+
+
+    var API;
+    window.onload = function () {
+        var editor = easyEditor('easyEditor');
+        $.emoticons({
+            'activeCls': 'trigger-active'
+        }, function (api) {
+            API = api;
+            var $content = $('textarea[name="content"]');
+        });
+
+    }
+
+    function hideModal(){
+        $('.showImgModal').css('display','none')
+    }
+
+</script>
+</body>
+</html>

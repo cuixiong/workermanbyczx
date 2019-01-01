@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+</head>
+<body>
+<table border="1">
+    <tr>
+        <th>id</th>
+        <th>用户名</th>
+        <th>操作</th>
+    </tr>
+    {volist name="user_list" id="vo"}
+      <tr>
+          <td>{$vo.user_id}</td>
+          <td>{$vo.user_name}</td>
+          <td><a href="{:url('del' , ['name'=>'czx' ,'age'=>18])}">删除</a></td>
+
+      </tr>
+    {/volist}
+</table>
+
+</body>
+</html>

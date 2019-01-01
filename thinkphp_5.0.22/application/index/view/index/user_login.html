@@ -1,0 +1,172 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script src="__JS__/jquery-3.1.1.min.js"></script>
+    <title>后台管理系统</title>
+    <meta charset="utf-8">
+
+    <style>
+        .main_bar{
+            width:auto;
+            height:350px;
+            background-color:#6495ED;
+            margin-top:10%;
+            margin-left:0%;
+            padding:0px;
+        }
+        .login_form{
+            width:40%;
+            height:100%;
+            background-color:#112435;
+            margin:0 auto;
+        }
+        #form_weight{
+            width:auto;
+            height:auto;
+            background-color:#d0d0d0;
+            margin:0 auto;
+        }
+        .title{
+            width:100%;
+            height:20%;
+            color:#fff;
+            text-align:center;/*使用text-align代替align*/
+            font-size:20pt;
+            font-family:"宋体";
+        }
+        .txt{
+            display:block;/*设置为独占一行*/
+            width:60%;
+            margin:0 auto;
+            height:35%;
+            font-size:15pt;
+            border-radius:10px;
+            border:0px;
+            padding-left:8px;
+        }
+        #icode{
+            width:30%;
+            height:35%;
+            font-size:15pt;
+            border-radius:10px;
+            border:0px;
+            margin-left:75px;
+            padding-left:8px;
+        }
+        #code{
+            color:#fff;
+            background-color:#000;
+            font-size:20pt;
+            margin-left:auto;
+            padding:5px 30px 5px 30px;
+            cursor:pointer;
+        }
+
+
+
+        .btn{
+
+            width:70%;
+            margin-left:15%;
+            height:40px;
+            border:0px;
+            font-size:15pt;
+            font-family:"微软雅黑";
+            background-color:#FC5628;
+            color:#fff;
+            border-radius:20px;
+        }
+        #forget{
+            width:70%;
+            text-align:right;margin:0 auto;/*这两者必须一起使用*/
+            padding:5px;
+
+        }
+        #forget a{
+            color:#000000;
+            text-decoration:none;
+        }
+
+        #forget a:hover{
+            color:#ff0000;
+            text-decoration:none;
+        }
+
+        #copyright{
+            width:100%;
+            padding-top:20px;
+            text-align:center;
+            color:#707070
+        }
+    </style>
+
+
+
+
+
+    <script type="text/javascript">
+
+        function check(){
+            // var input = document.getElementById('icode').value;
+            // if(input.toLowerCase() == code.toLowerCase()){
+            //
+            //     return true;
+            // }else
+            //     alert('验证码输入不正确');
+            // return false;
+        }
+        function changeImg() {
+            var timestamp2 = ( new Date()).valueOf();
+            var resource_url = '{:captcha_src()}';
+            $real_url = resource_url+"?timestamp="+timestamp2;
+            $("#captcha_image").attr("src" , $real_url);
+        }
+
+    </script>
+</head>
+<body onload="changeImg()">
+<div  class="main_bar">
+    <div class="login_form" >
+        <div  class="title">
+            系统登录
+        </div>
+
+        <form action="{:url('user_login')}" method="post" id="form1">
+            <div id="form_weight" >
+                <br/>
+                <input type="text" name="user_name" placeholder="请输入账号" value="用户名" id="box_name" onfocus="this.value=''" onblur="if(this.value=='')this.value='用户名'" class="txt"/>
+
+                <br/>
+
+                <input type="password" name="password" placeholder="请输入密码" id="box_password" class="txt"  onfocus="this.value=''"/>
+
+                <br/>
+
+                <input type="text" name="captcha_code" id="icode" placeholder="请输入正确的验证码" value="" onfocus="this.value=''" onblur="if(this.value=='')this.value='验证码'"/>
+
+                <span id="code" title="看不清，换一张" onclick="changeImg()"><img id="captcha_image" src="{:captcha_src()}"></span>
+
+                <div id="forget">
+                    <a href="#">忘记密码?</a>
+                </div>
+
+                <input type="submit" value="登录" class="btn"	onmouseover="this.style.backgroundColor='#FF8D00'" onmouseout="this.style.backgroundColor='#FC5628'"/>
+
+
+
+
+
+
+                <div id="copyright">
+                    Power By Dqd &copy;CopyRight 2016
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>
