@@ -244,4 +244,12 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
+
+    //redis 配置
+    'redis_conf'             =>[
+        'REDIS_HOST'  => '127.0.0.1',
+        'REDIS_PORT'  => 6379,
+        'REDIS_PREFIX'=> 'webim',
+    ],
+
 ];
