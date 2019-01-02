@@ -1,5 +1,6 @@
 <?php
 namespace app\index\controller;
+use think\cache\driver\Redis;
 use think\Controller;
 use think\Db;
 use think\Session;
@@ -14,12 +15,16 @@ class Index  extends Controller
     public function index()
     {
         $session = Session::get("user_info");
-        $session = $session ? $session[0] : NULl;
         if($session){
-            //$webServerIpAddress = config('webServerIpAddress');
-            //return dump($webServerIpAddress);
-            $this->assign("user_info" , $session);
-            //$this->assign("webServerIpAddress" , $webServerIpAddress);
+            //查出redis消息
+            $redis_server = new Redis(config('redis_conf'));
+            $message_list = $redis_server->get("message_list");
+            if($message_list){
+                $message_list = json_decode($message_list , true);
+                $message_list = $this->message_sort($message_list , $session);
+                $this->assign("message_list" , $message_list);
+            }
+            $this->assign("message_list" , $message_list);
             return $this->fetch();
         }else{
             $this->error("你还没有登陆" , url('user_login'));
@@ -37,19 +42,61 @@ class Index  extends Controller
            //验证验证码
            if(!$this->check_verify($input_data['captcha_code']))  $this->error("验证码错误");
 
-           $user_info = Db::query("select * from tp_member where user_name='{$input_data['user_name']}' and  password='{$input_data['password']}' ");
-
+           $user_info = Db::table("tp_member")->where("user_name ='{$input_data['user_name']}' and   password='{$input_data['password']}' ")->find();
            if($user_info){
                Session::set("user_info" , $user_info);
                //登录成功
                $this->success('登录成功', url('index'));
            }else{
                //登录失败
-               $this->error('登录失败');
+               $this->error('登录失败 , 账号或密码错误');
            }
         }else{
           return $this->fetch();
         }
+    }
+
+    /*
+     *   消息排序
+     *    当user_id是自己的时候 class为show
+     *    反之就是send
+     */
+    private function message_sort($message , $user_info){
+        //halt($message);
+        $handler_message = array();
+
+        foreach ($message as &$value){
+           if($value['user_id'] == $user_info['user_id']){
+               $value['html_type'] = 'show';
+           }else{
+               $value['html_type'] = 'send';
+           }
+
+           switch ($value['type']){
+               case 'image': $value['hand_content_type'] = $this->img_format($value['content']); break;
+               case 'say'  : $value['hand_content_type'] = $this->say_format($value['content']); break;
+               default: $value['hand_content_type'] = "有错误消息类型";
+           }
+
+           if($value['type'] == 'image') $value['hand_content_type'] = $this->img_format($value['content']);
+           $handler_message[] = '<div class="'.$value['html_type'].'"><div class="msg"><img class="headSrc" src="'.$value['head_image'].'"><div class="p"><i class="msg_input"></i>'.$value['hand_content_type'].'</div></div></div>';
+        }
+        return $handler_message;
+    }
+
+    /*
+     *   普通文字格式化
+     */
+    private function say_format($data){
+        return "<p>{$data}<br></p>";
+    }
+
+    /*
+     *   图片格式化
+     */
+    private function img_format($data){
+        $image_id =  md5(mt_rand(10000000,99999999));
+        return '<img id="'.$image_id.'" onclick="showimgFn('.$image_id.')" class="showimg" src="'.$data.'">';
     }
 
     /*
@@ -81,7 +128,7 @@ class Index  extends Controller
 
     public function info($id)
     {
-        dump(config());
+        halt(config());
         //http://tp5.phpfreemarker.com/index/Index/info/id/6
         return $id;
     }
@@ -103,6 +150,22 @@ class Index  extends Controller
         $this->assign('user_list', $list);
         //不带任何参数：  当前模块/默认视图目录/当前控制器（小写）/当前操作（小写）.html
         return $this->fetch();
+    }
+
+    /*
+     *   测试方法
+     */
+    public function test_function()
+    {
+        $user_info = Db::table("tp_member")->where("user_name ='czx' ")->find();
+        halt($user_info);
+        $list = Db::query("select * from tp_member where user_name='czx' ");
+
+        /*
+         *   这个方法是输出截停halt           dump不是tp3.2的版本了， 他不会截停
+         */
+        halt($list);
+        return 222;
     }
 
     /**

@@ -19,9 +19,9 @@
     <h5 class="tit">聊天室</h5>
 </header>
 <div class="message">
-
-
-
+    {volist name="message_list" id="vo"}
+      {$vo}
+    {/volist}
 </div>
 <div class="footer">
       <div class="uploadImg">
@@ -43,8 +43,8 @@
 
 <script src="/static/js/chat.js" type="text/javascript" charset="utf-8"></script>
 <script>
-    var headSrc = '{$user_info.head_image}';
-    var user_id = '{$user_info.user_id}';
+    var headSrc = '{$Think.session.user_info.head_image}';
+    var user_id = '{$Think.session.user_info.user_id}';
     var upload_image_url = '{:url("What/what_upload_image")}';
     var bind_url = '{:url("What/bind_client" )}';
     var send_url = '{:url("What/send_message" )}';
