@@ -20,7 +20,8 @@ class Index  extends Controller
             //查出redis消息
             $redis_server = new Redis(config('redis_conf'));
             $message_list = $redis_server->get("message_list");
-            if($message_list){
+            $message_info = Db::table("tp_message")->find();
+            if($message_list || $message_info){
                 $message_list = json_decode($message_list , true);
                 $message_list = $this->message_sort($message_list , $session);
                 $this->assign("message_list" , $message_list);
@@ -63,7 +64,13 @@ class Index  extends Controller
      *    反之就是send
      */
     private function message_sort($message , $user_info){
-        //halt($message);
+        $count_message = count($message);
+        $db_message_count = 100 - $count_message;
+        if($db_message_count>0){
+            $db_message_list = Db::table("tp_message")->order("id asc")->limit(0,$db_message_count)->select();
+            $message = $this->array_add( $db_message_list , $message );
+        }
+
         $handler_message = array();
 
         foreach ($message as &$value){
@@ -82,8 +89,28 @@ class Index  extends Controller
            if($value['type'] == 'image') $value['hand_content_type'] = $this->img_format($value['content']);
            $handler_message[] = '<div class="'.$value['html_type'].'"><div class="msg"><img class="headSrc" src="'.$value['head_image'].'"><div class="p"><i class="msg_input"></i>'.$value['hand_content_type'].'</div></div></div>';
         }
+
         return $handler_message;
     }
+
+    /*
+     *   数组合并， 相同的key也不覆盖
+     */
+    private function array_add($a1,$a2){
+        if(!$a1) $a1 = array();
+        if(!$a2) $a2 = array();
+        $n = 0;
+        foreach ($a1 as $key => $value) {
+            $re[$n] = $value;
+            $n++;
+        }
+        foreach ($a2 as $key => $value) {
+            $re[$n] = $value;
+            $n++;
+        }
+        return $re;
+    }
+
 
     /*
      *   普通文字格式化
