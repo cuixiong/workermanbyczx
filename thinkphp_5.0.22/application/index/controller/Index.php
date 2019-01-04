@@ -6,6 +6,7 @@ use think\Db;
 use think\Session;
 use think\Config;
 use think\captcha\Captcha;
+use app\common\controller\SendMail;
 
 class Index  extends Controller
 {
@@ -30,7 +31,7 @@ class Index  extends Controller
             $this->error("你还没有登陆" , url('user_login'));
         }
     }
-
+   
     /*
      *   用户登录
      */
@@ -114,9 +115,16 @@ class Index  extends Controller
     }
 
 
-    //------------------------- 下面是测试
+    //------------------------- 下面是测试----------------------------------------------
 
-
+    public function testcommon()
+    {
+        //测试  访问公共模块   use app\common\controller\SendMail;
+        $model = new SendMail();
+        halt($model->test());
+    }
+    
+    
     public function hello()
     {
 //        $ip_addr = config('workermanRegisterAddress');
