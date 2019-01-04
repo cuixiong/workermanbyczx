@@ -2,7 +2,7 @@
     width: 100%;
     height: 100%;
     position: absolute;
-    background: url("../images/bj.png") no-repeat;
+    /*background: url("/static/img/bj.png") no-repeat;*/
     -webkit-background-size: 100%;
     background-size: 100%;
     top: 0;

@@ -14,12 +14,10 @@ return [
     // | 应用设置
     // +----------------------------------------------------------------------
 
-    // 应用调试模式
-    'workermanRegisterAddress' => '127.0.0.1:1236',
-    //'workermanRegisterAddress' => '0.0.0.0:8090',
 
-    //'webServerIpAddress' => 'ws://127.0.0.1:7272',
-    //'webServerIpAddress' => 'ws://47.106.221.85:8080',
+	// 应用调试模式
+    'workermanRegisterAddress' => '127.0.0.1:1236',
+
 
     'app_debug'              => true,
     // 应用Trace
@@ -252,4 +250,22 @@ return [
         'REDIS_PREFIX'=> 'webim',
     ],
 
+    // mail配置
+    'mail'             =>[
+         //开启邮件调试模式   0为关闭
+        'SMTP_DEBUG'  => 0,
+        'SMTP_HOST'   => 'smtp.qq.com',
+        //smtp 登陆账号
+        'USERNAME'    => '',
+        'PASSWORD'    => '',
+        'SMTP_PORT'   => 465,
+        //发送者邮箱
+        'FROM'        => '798396652@qq.com',
+        'FROM_NAME'   => 'czxwebim',
+        'CHARSET'     => 'UTF-8',
+        'FROM_HOST'   => 'webim.hellocuizhixiong97.cn',
+        'SMTP_SECURE' => 'ssl',
+
+
+    ],
 ];

@@ -13,10 +13,10 @@
         <div id="logo">
             <img src="/static/img/logo.png" alt=""/>
         </div>
-        <form action="">
+        <form action="{:url('login')}" method="post">
             <div class="userName">
                 <lable>用户名：</lable>
-                <input type="text" name="name" placeholder="请输入用户名" pattern="[0-9A-Za-z]{6,16}" required/>
+                <input type="text" name="user_name" placeholder="请输入用户名" pattern="[0-9A-Za-z]{2,16}" required/>
             </div>
             <div class="passWord">
                 <lable>密&nbsp;&nbsp;&nbsp;码：</lable>
