@@ -7,7 +7,8 @@
 
 namespace app\index\controller;
 use think\Controller;
-
+use think\Db;
+use think\Session;
 class Member extends Controller 
 {   
     /*
@@ -23,11 +24,30 @@ class Member extends Controller
      */
     public function login()
     {
-        return $this->fetch();
+        $request = request();
+        if($request->isPost()){
+            $input_data = input('param.') ;
+            //验证验证码
+            //if(!$this->check_verify($input_data['captcha_code']))  $this->error("验证码错误");
+
+            $user_info = Db::table("tp_member")->where("user_name ='{$input_data['user_name']}' and   password='{$input_data['password']}' ")->find();
+            if($user_info){
+                Session::set("user_info" , $user_info);
+                //登录成功
+                $this->success('登录成功', url('index'));
+            }else{
+                //登录失败
+                $this->error('登录失败 , 账号或密码错误');
+            }
+        }else{
+            return $this->fetch();
+        }
     }
     
     /*
      *   注册
+     *   邮箱验证码功能需要做校验功能(避免频繁刷发邮件验证码)
+     *   我还是把注册地址放到邮箱里面， 进去做激活操作。  有效期为2天，
      */
     public function register()
     {
