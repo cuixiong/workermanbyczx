@@ -24,7 +24,7 @@ class Crontab extends Controller
         parent::__construct($request);
         $sapi_type  =  php_sapi_name ();
         if ( substr ( $sapi_type ,  0 ,  3 ) !=  'cli' ) {
-            //$this->error("带佬这是我们内部请求的");
+            $this->error("带佬这是我们内部请求的");
         }
     }
 
@@ -35,14 +35,14 @@ class Crontab extends Controller
     {
         $redis_server = new Redis(config('redis_conf'));
         $message_list = $redis_server->get("message_list");
-
+        $date_format = date("Y-m-d H:i:s" , time());
         if($message_list){
            $message_list = json_decode($message_list  , true);
            $result = Db::table('tp_message')->insertAll($message_list);
            //销毁缓存
            if($result) $redis_server->set("message_list" ,"");
-           return "导入成功";
+           return "result : {$result}    date_time".$date_format."\n";
         }
-        return "没有可导入的数据";
+        return "result : 0    date_time".$date_format."\n";
     }
 }
