@@ -15,9 +15,9 @@ return [
     // +----------------------------------------------------------------------
 
     // 应用调试模式
-    //'workermanRegisterAddress' => '127.0.0.1:1236',
+    'workermanRegisterAddress' => '127.0.0.1:1236',
 
-    //'webServerIpAddress' => 'ws://127.0.0.1:7272',
+    'webServerIpAddress' => 'ws://127.0.0.1:7272',
 
 
     'app_debug'              => true,

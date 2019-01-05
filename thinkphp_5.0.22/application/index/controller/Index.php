@@ -27,6 +27,7 @@ class Index  extends Controller
                 $this->assign("message_list" , $message_list);
             }
             $this->assign("message_list" , $message_list);
+            $this->assign("webServerIpAddress" , config("webServerIpAddress"));
             return $this->fetch();
         }else{
             $this->error("你还没有登陆" , url('user_login'));

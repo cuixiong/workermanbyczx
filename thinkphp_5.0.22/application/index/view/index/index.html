@@ -38,18 +38,17 @@
     <img style="max-width:100%;background:rgba(255,255,255,0.5);" src="" alt="">
 </div>
 <script>
-
-</script>
-
-<script src="/static/js/chat.js" type="text/javascript" charset="utf-8"></script>
-<script>
+    //变量放 chat.js前面，  那个js才会有变量
+    var what_addr= '{$webServerIpAddress}';
     var headSrc = '{$Think.session.user_info.head_image}';
     var user_id = '{$Think.session.user_info.user_id}';
     var upload_image_url = '{:url("What/what_upload_image")}';
     var bind_url = '{:url("What/bind_client" )}';
     var send_url = '{:url("What/send_message" )}';
+</script>
 
-
+<script src="/static/js/chat.js" type="text/javascript" charset="utf-8"></script>
+<script>
     var API;
     window.onload = function () {
         var editor = easyEditor('easyEditor');

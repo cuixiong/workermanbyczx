@@ -118,8 +118,7 @@ function SubmitFn2(){
 }
 var ws, name, client_list={};
 function connect(){
-    // ws = new WebSocket("ws://47.106.221.85:8080");
-    ws = new WebSocket("ws://127.0.0.1:7272");
+    ws = new WebSocket(what_addr);
     console.log(ws);
     ws.onopen = SubmitFn;
     ws.onmessage = onmessage;
