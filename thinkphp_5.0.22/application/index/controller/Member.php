@@ -9,6 +9,7 @@ namespace app\index\controller;
 use think\Controller;
 use think\Db;
 use think\Session;
+use think\captcha\Captcha;
 class Member extends Controller 
 {   
     /*
@@ -51,6 +52,11 @@ class Member extends Controller
      */
     public function register()
     {
+        $request = request();
+        if($request->isPost()){
+            $input_data = input('param.') ;
+            halt($input_data);
+        }
         return $this->fetch();
     }
 
@@ -60,5 +66,21 @@ class Member extends Controller
     public function new_password()
     {
         return $this->fetch();
+    }
+
+
+
+    /*
+ *   验证码图片
+ */
+    public function captcha_image()
+    {
+        $captcha = new Captcha();
+        return $captcha->entry();
+    }
+
+    function check_verify($code, $id = ''){
+        $captcha = new Captcha();
+        return $captcha->check($code, $id);
     }
 }

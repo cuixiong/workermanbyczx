@@ -1,70 +1,57 @@
-<html lang="en" style="font-size: 100px;">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
-    <title>聊天室</title>
-    <link rel="stylesheet" type="text/css" href="/static/public/style/cssreset-min.css">
-    <link rel="stylesheet" type="text/css" href="/static/public/style/common.css">
-    <script src="/static/js/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript" src="/static/code/jquery.emoticons.js"></script>
-    <link rel="stylesheet" type="text/css"
-	 href="/static/css/chat.css">
-    <script src="/static/js/easyEditor.min.js"></script>
-    <script src="/static/js/flexible.js"></script>
+    <meta charset="utf-8"/>
+    <title>
+        手风琴内容列表UI
+    </title>
+    <link rel="stylesheet" href="/static/css/index.css" type="text/css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/custom.js"></script>
 </head>
-<body style="">
-<header class="header">
-    <a class="back" href="javascript:history.back()"></a>
-    <h5 class="tit">聊天室</h5>
-</header>
-<div class="message">
-    {volist name="message_list" id="vo"}
-      {$vo}
-    {/volist}
-</div>
-<div class="footer">
-      <div class="uploadImg">
-          <img class="img" src="/static/img/uploadPic.png" alt="">
-        <input id="ipt_img" class="ipt_img" name="file" type="file" width="5px" height="5px">
+<body>
+<div class="accordion-wrap">
+    <div class="accordion">
+        <a href="javascript:void(0)"><i class="fa fa-user"></i>&nbsp;个人简介</a>
+        <div class="nav profile">
+            <div class="photo">
+                <div class="mask-layer">
+                    <span>+</span>
+                </div>
+            </div>
+            <h3>TianYu</h3>
+            <div class="introduction">
+                Hi, It's me Mohan. I'm a web and graphics designer. Designing is my passion and I have been working on various designing projects.
+            </div>
+        </div>
+        <a href="javascript:void(0)"><i class="fa fa-comments"></i>&nbsp;对话</a>
+        <div class="nav">
+            <div class="chat">
+                <div class="mychat comm-chat">
+                    <span>今天工作完成了吗？</span>
+                </div>
+                <div class="mychat comm-chat">
+                    <span>完成了给我回个消息,看到消息请及时回复我，不然扣工资</span>
+                </div>
+                <div class="callchat comm-chat">
+                    <span>老板呀，已经完成了</span>
+                </div>
+                <div class="callchat comm-chat">
+                    <span>明天上班前我给你汇报一下具体的情况</span>
+                </div>
+            </div>
+        </div>
+        <a href="javascript:void(0)"><i class="fa fa-envelope"></i>&nbsp;消息<span class="prompt">21</span></a>
+        <div class="nav message">
+            <a href="#">Inbox<span class="prompt">11</span></a>
+            <a href="#">Sent</a>
+            <a href="#">Trash</a>
+            <a href="#">Draft<span class="prompt">5</span></a>
+        </div>
+        <a href="javascript:void(0)"><i class="fa fa-envelope"></i>&nbsp;上传头像<span class="prompt">21</span></a>
+        <a href="javascript:void(0)"><i class="fa fa-envelope"></i>&nbsp;个性签名<span class="prompt">21</span></a>
     </div>
-
-    <a class="trigger" href="javascript:void(0);"></a>
-    <div class="easyEditor" id="easyEditor"></div>
-    <input class="sendContent" type="hidden" name="content">
-    <p class="fasong">发送</p>
 </div>
-<div class="showImgModal flexCenter" onclick="hideModal()">
-    <img style="max-width:100%;background:rgba(255,255,255,0.5);" src="" alt="">
-</div>
-<script>
-    //变量放 chat.js前面，  那个js才会有变量
-    var what_addr= '{$webServerIpAddress}';
-    var headSrc = '{$Think.session.user_info.head_image}';
-    var user_id = '{$Think.session.user_info.user_id}';
-    var upload_image_url = '{:url("What/what_upload_image")}';
-    var bind_url = '{:url("What/bind_client" )}';
-    var send_url = '{:url("What/send_message" )}';
-</script>
-
-<script src="/static/js/chat.js" type="text/javascript" charset="utf-8"></script>
-<script>
-    var API;
-    window.onload = function () {
-        var editor = easyEditor('easyEditor');
-        $.emoticons({
-            'activeCls': 'trigger-active'
-        }, function (api) {
-            API = api;
-            var $content = $('textarea[name="content"]');
-        });
-
-    }
-
-    function hideModal(){
-        $('.showImgModal').css('display','none')
-    }
-
-</script>
 </body>
 </html>

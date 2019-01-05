@@ -1,0 +1,46 @@
+/* CSS document */
+@charset "gb2312";
+/*  重置浏览器默认样式  */
+body,ul,li,div,h1,h2,h3,h4,h5,h6{margin:0;padding:0;}
+body{font:12px Microsoft YaHei,SimSun,Roboto,sans-serif}
+a{text-decoration:none;color:#374046;}
+a:hover{text-decoration:none;}
+li{list-style:none;}
+img{border:0px;}
+
+.active{background-color:#E8D0A9;color:#B77F24;}
+.flr{float:right;}
+
+/* 主体样式  */
+.accordion-wrap{padding:15px;background:-webkit-gradient(linear,0 0,100% 0,from(#F0C27B),to(#4B1248));background:-moz-linear-gradient(left,#F0C27B,#4B1248);min-height:986px;}
+.accordion{width:280px;margin:0 auto;border-radius:3px;margin-top:100px;background-color:#B7AFA3;overflow:hidden;box-shadow:3px 13px 20px 0px rgba(0,0,0,0.3),-2px -2px 23px 0px rgba(0,0,0,0.2);}
+.accordion a{display:block;padding:15px;font-size:14px;transition:background-color 0.8s;}
+.accordion a:not(:last-child){border-bottom:1px solid rgba(0,0,0,.2);}
+.accordion a:hover{background-color:#E8D0A9;}
+.accordion a span.prompt{float:right;background:#665e51;border-radius:15px;color:#eee;line-height:22px;width:40px;text-align:center;font-size:12px;font-weight:700;}
+.accordion .nav{padding:10px;display:none;background: #ecf0f1;}
+.profile div,.profile h3,.profile .introduction{text-align:center;}
+.profile h3{margin-top:10px;}
+.profile h3,.profile .introduction{padding:10px;}
+.profile .photo{margin:0px auto; background:url("/static/img/avatar.jpg") no-repeat center;border-radius:50%;border:5px solid #fff;box-shadow:0px 6px 20px 0px rgba(0,0,0,.19),0px 8px 16px 0px rgba(0,0,0,.2);width:95px;height:95px;position:relative;}
+/*.mask-layer{background:rgba(0,0,0,.4);opacity:0;width:95px;height:95px;position:relative;border-radius:50%;transition:all .1s ease;transform:scale(0);visibility:hidden;}*/
+.mask-layer{background:rgba(0,0,0,.4);opacity:0;position:absolute;top:0;left:0;right:0;bottom:0;border-radius:50%;transition:all .1s ease;transform:scale(0);visibility:hidden;}
+.mask-layer span{width:30px;height:30px;display:block;margin:0px auto;background-color:#e8d0a9;position:absolute;top:50%;left:50%;margin-top:-15px;margin-left:-15px;border-radius:50%;transform:scale(0);transition:all .1s ease-in-out;cursor:pointer;font-size:15px;
+text-align:center;line-height: 30px;}
+.photo:hover .mask-layer{opacity:1;visibility:visible;transform:scale(1);}
+.photo:hover .mask-layer span{transform:scale(1);}
+
+
+.nav .chat{position:relative;}
+.nav .comm-chat{margin:10px 0px;}
+.nav .comm-chat span{display:block;max-width:70%;position:relative;padding:5px;border:1px solid #cdd6d8;border-radius:3px;line-height:20px;}
+.nav .comm-chat:after{content:"";display:table;clear:both;}
+.nav .chat .mychat span{background-color:#dce2e4;float:right;}
+.nav .chat .callchat span{float:left;}
+
+
+.nav.message{padding:0px;}
+.nav.message a{transition:all 0.2s;}
+.nav.message a:hover{background-color:rgba(232,208,169,0.3);box-shadow:5px 0px  0px 0px rgba(183, 127, 36,0.4) inset;}
+
+

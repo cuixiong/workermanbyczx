@@ -12,7 +12,7 @@ use think\Config;
 use think\Controller;
 use think\Request;
 use think\Session;
-
+use think\Db;
 
 class What extends Controller{
     public function __construct(Request $request = null)
@@ -22,9 +22,28 @@ class What extends Controller{
         if(!$user_info) $this->error("带佬请不要翻墙");
     }
 
+    /*
+     *   聊天主页
+     */
     public function index()
     {
-        halt(Session::get("user_info"));
+        $session = Session::get("user_info");
+        if($session){
+            //查出redis消息
+            $redis_server = new Redis(config('redis_conf'));
+            $message_list = $redis_server->get("message_list");
+            $message_info = Db::table("tp_message")->find();
+            if($message_list || $message_info){
+                $message_list = json_decode($message_list , true);
+                $message_list = $this->message_sort($message_list , $session);
+                $this->assign("message_list" , $message_list);
+            }
+            $this->assign("message_list" , $message_list);
+            $this->assign("webServerIpAddress" , config("webServerIpAddress"));
+            return $this->fetch();
+        }else{
+            $this->error("你还没有登陆" , url('user_login'));
+        }
     }
 
     /*
@@ -165,6 +184,77 @@ class What extends Controller{
         $send_param['user_name'] = $user_info['user_name'];
         return $send_param;
     }
+
+    /*
+     *   消息排序
+     *    当user_id是自己的时候 class为show
+     *    反之就是send
+     */
+    private function message_sort($message , $user_info){
+        $count_message = count($message);
+        $db_message_count = 100 - $count_message;
+        if($db_message_count>0){
+            $db_message_list = Db::table("tp_message")->order("id asc")->limit(0,$db_message_count)->select();
+            $message = $this->array_add( $db_message_list , $message );
+        }
+
+        $handler_message = array();
+
+        foreach ($message as &$value){
+            if($value['user_id'] == $user_info['user_id']){
+                $value['html_type'] = 'show';
+            }else{
+                $value['html_type'] = 'send';
+            }
+
+            switch ($value['type']){
+                case 'image': $value['hand_content_type'] = $this->img_format($value['content']); break;
+                case 'say'  : $value['hand_content_type'] = $this->say_format($value['content']); break;
+                default: $value['hand_content_type'] = "有错误消息类型";
+            }
+
+            if($value['type'] == 'image') $value['hand_content_type'] = $this->img_format($value['content']);
+            $handler_message[] = '<div class="'.$value['html_type'].'"><div class="msg"><img class="headSrc" src="'.$value['head_image'].'"><div class="p"><i class="msg_input"></i>'.$value['hand_content_type'].'</div></div></div>';
+        }
+
+        return $handler_message;
+    }
+
+    /*
+     *   数组合并， 相同的key也不覆盖
+     */
+    private function array_add($a1,$a2){
+        if(!$a1) $a1 = array();
+        if(!$a2) $a2 = array();
+        $n = 0;
+        foreach ($a1 as $key => $value) {
+            $re[$n] = $value;
+            $n++;
+        }
+        foreach ($a2 as $key => $value) {
+            $re[$n] = $value;
+            $n++;
+        }
+        return $re;
+    }
+
+
+    /*
+     *   普通文字格式化
+     */
+    private function say_format($data){
+        return "<p>{$data}<br></p>";
+    }
+
+    /*
+     *   图片格式化
+     */
+    private function img_format($data){
+        $image_id =  md5(mt_rand(10000000,99999999));
+        return '<img id="'.$image_id.'" onclick="showimgFn('.$image_id.')" class="showimg" src="'.$data.'">';
+    }
+
+
     /*
      *  加载 client包
      *  D:\phpWorkSpace\phpfreemarker\Tp5.0\thinkphp_5.0.22>composer require workerman/gatewayclient
